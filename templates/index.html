@@ -2,6 +2,21 @@
 
 {% block body %}
 
+<p><a href="{{ url_for('add_movie')}}"> Add a new Movie</a></p>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert" id="flash">
+  {% for message in messages %}
+  <strong>Alert!</strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+</div>
+
 {% if movies %}
 
 <style>
@@ -28,6 +43,8 @@
                 <th>Movie Name</th>
                 <th>Genre</th>
                 <th>Director</th>
+                <th>Running Time</th>
+                <th>Details</th>
             </tr>
         </thead>
 
@@ -40,12 +57,18 @@
                 <td> {{ row.movie_name }}</td>
                 <td> {{ row.genre }}</td>
                 <td> {{ row.director }}</td>
+                <td> {{ row.running_time }}</td>
+
+                <td>
+                  <form action="{{ url_for('movie', movie_id=row.movieId) }}" method="POST">
+                    <input type="submit" value="Details" class="btn btn-info" />
+                  </form>
+                </td>
+
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
 {% endif %}
-
-<p><a href="{{ url_for('.add_movie')}}"> Add a new friend</a></p>
-
 {% endblock %}
