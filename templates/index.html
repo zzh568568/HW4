@@ -1,7 +1,30 @@
 {% extends 'base.html' %}
+
 {% block body %}
+<p><a href="{{ url_for('.add_movie')}}"> Add a new friend</a>
+{% if movies %}
+    <table>
+        <thead>
+            <tr>
+                <th>Movie ID</th>
+                <th>Movie Name</th>
+                <th>Genre</th>
+                <th>Director</th>
+            </tr>
+        </thead>
 
-<h2> This is my Flask server! </h2>
-<img src="../static/images/flask.jpg" />
+        <tbody>
 
+            {% for row in movies %}
+	          <tr>
+
+                <td> {{ row.movieId }}</td>
+                <td> {{ row.movie_name }}</td>
+                <td> {{ row.genre }}</td>
+                <td> {{ row.director }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
 {% endblock %}
