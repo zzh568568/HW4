@@ -1,8 +1,26 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<p><a href="{{ url_for('.add_movie')}}"> Add a new friend</a>
+
 {% if movies %}
+
+<style>
+  table {
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  tr:nth-child(even) {
+    background-color: #eee;
+  }
+  tr:nth-child(odd) {
+    background-color: #fff;
+  }
+</style>
+
     <table>
         <thead>
             <tr>
@@ -27,4 +45,7 @@
         </tbody>
     </table>
 {% endif %}
+
+<p><a href="{{ url_for('.add_movie')}}"> Add a new friend</a></p>
+
 {% endblock %}
