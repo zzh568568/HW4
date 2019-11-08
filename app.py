@@ -5,14 +5,23 @@ from wtforms import StringField, IntegerField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
-import secrets
+#import secrets
+import os
 
-conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
+dbUser = os.environ.get('DBUSER')
+dbPass = os.environ.get('DBPASS')
+dbHost = os.environ.get('DBHOST')
+dbName = os.environ.get('DBNAME')
+
+#conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
+conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbUser, dbPass, dbHost, dbName)
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='SuperSecretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = conn
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+
 db = SQLAlchemy(app)
 
 class zzhang178_moviesapp(db.Model):
