@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block body %}
+<form method="POST">
+    <input type="text" autofocus="autofocus" name="search_string">
+    <input type="submit" formaction="/search" value="Search">
+</form>
+
+<hr>
 
 <p><a href="{{ url_for('add_movie')}}"> Add a new Movie</a></p>
 

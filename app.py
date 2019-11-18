@@ -4,17 +4,18 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 import pymysql
-#import secrets
-import os
+import secrets
+#import os
 
-dbUser = os.environ.get('DBUSER')
-dbPass = os.environ.get('DBPASS')
-dbHost = os.environ.get('DBHOST')
-dbName = os.environ.get('DBNAME')
+#dbUser = os.environ.get('DBUSER')
+#dbPass = os.environ.get('DBPASS')
+#dbHost = os.environ.get('DBHOST')
+#dbName = os.environ.get('DBNAME')
 
-#conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
-conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbUser, dbPass, dbHost, dbName)
+conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
+#conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbUser, dbPass, dbHost, dbName)
 
 
 app = Flask(__name__)
@@ -44,6 +45,18 @@ class MoviesForm(FlaskForm):
 def index():
     all_movies = zzhang178_moviesapp.query.all()
     return render_template('index.html', movies=all_movies, pageTitle='New Movies')
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        form = request.form
+        search_value = form['search_string']
+        search = "%{0}%".format(search_value)
+        results = zzhang178_moviesapp.query.filter(or_(zzhang178_moviesapp.movie_name.like(search),
+                                                        zzhang178_moviesapp.director.like(search))).all()
+        return render_template('index.html', movies=results, pageTitle='New Movies', legend="Search Results")
+    else:
+        return redirect('/')
 
 @app.route('/movie/new', methods=['GET', 'POST'])
 def add_movie():
